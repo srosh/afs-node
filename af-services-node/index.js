@@ -69,14 +69,11 @@ for (key in appFogServices)
 		getall(appFogServices[key],services.mongodb);
 		for (name in services.mongodb)
 		{
-			services.mongodb[name].connect = function (db,options) {
-				var url = 'mongodb://' + this.cred.username + ':' + this.cred.password + '@' + this.cred.hostname + ':' + this.cred.port + '/' + this.cred.db ;
+			services.mongodb[name].connect = function (options,callback) {
+				//var url = 'mongodb://' + this.cred.username + ':' + this.cred.password + '@' + this.cred.hostname + ':' + this.cred.port + '/' + this.cred.db ;
 				var mongodbModule=require('mongodb');
 				if (!mongodbModule) return null;
-				mongodbModule.connect(url ,options , function(error, client){
-					if (error != null) return null;
-					return client;
-				});
+				return mongodbModule.connect(this.cred.url ,options , callback);
 			}
 		}
 	};
